@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <table class="table table-bordered" style="width:100%;">
+        <thead>
+            <tr>
+                <td>
+                    Name
+                </td>
+                <td>
+                    Description
+                </td>
+                <td>
+                    Actions
+                </td>
+            </tr>
+        </thead>
+        <tbody id="dashboard_table">
+        </tbody>
+    </table>
+</div>
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+<script>
+    var connection = new signalR.HubConnectionBuilder().withUrl("/dashboardHub").build();
+    connection.start();
+    connection.on("GetProgrammingLanguages", function (programmingLanguages) {
+        var table = document.getElementById("dashboard_table");
+        programmingLanguages.forEach(function (item, index, array) {
+            let row = document.createElement("tr");
+            let td = document.createElement("td");
+            td.textContent = item.name;
+            row.appendChild(td);
+            let td2 = document.createElement("td");
+            td2.textContent = item.description;
+            row.appendChild(td2);
+            let td3 = document.createElement("td");
+            td3.textContent = "";
+            row.appendChild(td3);
+            table.appendChild(row);
+        });
+    });
+</script>
