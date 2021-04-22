@@ -15,9 +15,11 @@ namespace SignalR_Sample.Controllers
     public class HomeController : Controller
     {
         private IHubContext<DashboardHub> _hub { get; set; }
-        public HomeController(IHubContext<DashboardHub> hub)
+        private readonly ApplicationDbContext _db;
+        public HomeController(IHubContext<DashboardHub> hub, ApplicationDbContext db)
         {
             _hub = hub;
+            _db = db;
         }
 
         public async Task<IActionResult> Index()
@@ -27,10 +29,6 @@ namespace SignalR_Sample.Controllers
 
         public async Task<IActionResult> Privacy()
         {
-            DashboardViewModel model = new DashboardViewModel();
-            model.ProgrammingLanguages = new List<ProgrammingLanguage>();
-            model.ProgrammingLanguages.Add(new ProgrammingLanguage() { Id = 1, Name = "C#", Description = "Microsoft Language C#" });
-            await _hub.Clients.All.SendAsync("GetProgrammingLanguages", model.ProgrammingLanguages);
             return View();
         }
 

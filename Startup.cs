@@ -1,14 +1,17 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SignalR_Sample.Hubs;
+using SignalR_Sample.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Utility.Util;
 
 namespace SignalR_Sample
 {
@@ -26,6 +29,9 @@ namespace SignalR_Sample
         {
             services.AddControllersWithViews();
             services.AddSignalR();
+            services.AddDbContext<ApplicationDbContext>(options => {
+                options.UseSqlServer(Configuration.GetConnectionString(Constants.ConnectionString));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
